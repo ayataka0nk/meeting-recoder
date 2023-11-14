@@ -15,7 +15,7 @@ SAMPLE_RATE = 16000
 CHANNELS = 1
 
 # TODO 設定ファイルで調整できるようにしたい。
-THRESHOLD = 0.1
+THRESHOLD = 0.09
 
 
 def record(microphone) -> Generator[NDArray[np.float32], Any, Any]:
@@ -135,14 +135,17 @@ def isIncludeVoice(audio: NDArray[float32]):
 
 def speechToText(audio: NDArray[float32], language: str, prompt: str | None = None):
     # ここで処理してるときにKeyboardInterruptした時の挙動調整
-    buffer = io.BytesIO()
-    sf.write(buffer, audio, SAMPLE_RATE, format="wav")
-    buffer.name = "output.wav"
-    openai = OpenAI()
-    result = openai.audio.transcriptions.create(
-        model="whisper-1", file=buffer, language=language, prompt=prompt
-    )
-    return result.text
+    if isIncludeVoice(audio):
+        buffer = io.BytesIO()
+        sf.write(buffer, audio, SAMPLE_RATE, format="wav")
+        buffer.name = "output.wav"
+        openai = OpenAI()
+        result = openai.audio.transcriptions.create(
+            model="whisper-1", file=buffer, language=language, prompt=prompt
+        )
+        return result.text
+    else:
+        return ""
 
 
 def record_audio_limited() -> NDArray[float32]:

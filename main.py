@@ -23,7 +23,7 @@ def main():
     global DURATION
     audio = np.empty(DURATION, dtype=np.float32)
     try:
-        with open("tmp.txt", "w", encoding="utf-8", buffering=1) as full_text:
+        with open("transcription.txt", "w", encoding="utf-8", buffering=1) as full_text:
             for peace in slice_by_seconds(
                 DURATION, slice_by_silence(record_mix_audio())
             ):
@@ -47,7 +47,7 @@ def main():
 def record_mix_audio_test():
     audio = np.empty(0, dtype=np.float32)
     try:
-        with open("tmp.txt", "w") as f:
+        with open("transcription.txt", "w") as f:
             for peace in slice_by_seconds(10, slice_by_silence(record_mix_audio())):
                 audio = np.append(audio, peace)
                 text = speechToText(
