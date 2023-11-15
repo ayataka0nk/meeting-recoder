@@ -2,3 +2,5 @@ venv
 __pycache__
 *.wav
 .env
+transcription.txt
+realtime.txt

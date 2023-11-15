@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DURATION = 10
+DURATION = 60
 
 
 def main():
